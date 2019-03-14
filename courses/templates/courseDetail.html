@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+	<link rel="stylesheet" href="{% static 'css/detail_course.css' %}">
+{% endblock %}
+
+
+{% block js %}
+	<script src="{% static 'js/detail_course.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+	<div class="row">
+		<div class="col-6">
+			<img src="{{ MEDIA_ROOT }}{{ course.image.url }}" alt="">
+		</div>
+		<div class="col-6">
+			<h1>{{ course.name }}</h1>
+			<p>{{course.description}}</p>
+			<p>{{course.price}}</p>
+			<button>Купить</button>
+		</div>
+		<div class="row">
+			<div class="col-4">
+				<div class="list-group" id="list-tab" role="tablist">
+					<a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">{{ course.week_one }}</a>
+					<a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">{{ course.week_second }}</a>
+					<a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">{{ course.week_third }}</a>
+					<a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">{{ course.week_fourth }}</a>
+				</div>
+			</div>
+			<div class="col-8">
+				<div class="tab-content" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+						{{ course.description_week_one}}
+					</div>
+					<div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+						{{ course.description_week_second }}
+					</div>
+					<div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+						{{ course.description_week_third }}
+					</div>
+					<div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+						{{ course.description_week_fourth }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

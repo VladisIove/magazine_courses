@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'js/about.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+
+
+    <div class="info_page_header">О нас</div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p>Компания Road to the Dream – это не отдельный человек или команда, Road to the Dream – это каждый, кто живет с мечтой в сердце и готов прикладывать усилия для ее достижения!</p>
+
+            <p>Родившись как надпись для мотивационной стены, сейчас это бренд, который живет в сердцах у тысяч людей и вдохновляет каждого сражаться за свои мечты!</p>
+
+            <p>Мы верим, что продукция RD станет для тебя больше, чем просто одеждой или аксессуаром. Пусть она станет для тебя ежедневным напоминанием, что твои цели достижимы, ведь сама компания Road to the Dream – это живой пример реализованной мечты!</p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+	<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+
+{% block js %}
+	<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		{% for course in courses %}
+			<div class="col-6">
+				<div class="card bg-dark text-white">
+					<img src="{{ MEDIA_ROOT }}{{ course.image.url}}" class="card-img" alt="...">
+					<div class="card-img-overlay">
+						<h5 class="card-title">{{ course.name }}</h5>
+						<p class="card-text">{{ course.little_description}}</p>
+						<p class="card-text">{{ course.price }}</p>
+						<form class="form-inline my-2 my-lg-0">
+							<a class="btn btn-success mr-2 " href="#" role="button">Купить сейчас</a>
+							<a class="btn btn-primary" href="{{ course.get_absolute_url }}" role="button">Подробнее</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		{% empty %}
+			<h1>Курсов на данный момент нету</h1>
+		{% endfor %}
+	</div>
+{% endblock %}

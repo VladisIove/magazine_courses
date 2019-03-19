@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.views.generic.list import ListView
@@ -7,18 +7,52 @@ from django.core.mail import EmailMessage
 
 from .models import Course
 from .forms import HelpForm
+
+from basket.models import Cart
 # Create your views here.
 
 
-class CourseListView(ListView):
-  model = Course
-  template_name = "home.html"
-  context_object_name = 'courses'
+def CourseList(request):
+	courses = Course.objects.all()
+	try:
+		cart_id = request.session['cart_id']
+		cart = Cart.objects.get(id=cart_id)
+		request.session['total'] = cart.items.count()
+	except:
+		cart = Cart()
+		cart.save()
+		cart_id = cart.id
+		request.session['cart_id'] = cart_id
+		cart = Cart.objects.get(id=cart_id)
 
-class CourseDetailView(DetailView):
-	model = Course
-	template_name = "courseDetail.html"
-	context_object_name = 'course'
+	context = {
+		'courses':courses,
+		'cart': cart,
+	}
+	return render(request, 'home.html', context)
+
+def CourseDetail(request,slug):
+	course = get_object_or_404(Course,slug=slug)
+	
+	try:
+		cart_id = request.session['cart_id']
+		cart = Cart.objects.get(id=cart_id)
+		request.session['total'] = cart.items.count()
+	except:
+		cart = Cart()
+		cart.save()
+		cart_id = cart.id
+		request.session['cart_id'] = cart_id
+		cart = Cart.objects.get(id=cart_id)
+
+
+	context = {
+		'course':course, 
+		'cart':cart,
+	}
+	return render(request, 'courseDetail.html', context)
+
+
 
 
 def help_message(request):

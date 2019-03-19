@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'courses',
     'user_profile',
+    'basket',
 
     'crispy_forms',
 ]
@@ -147,3 +148,6 @@ DEFAULT_TO_EMAIL = "'njvjzgjxnf"
 
 LOGIN_REDIRECT_URL = 'courses:home_page'
 LOGOUT_REDIRECT_URL = 'courses:home_page'
+
+
+CART_SESSION_ID = 'basket'

@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
+{% block title %}
+    О нас
+{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/about.css' %}">
 {% endblock %}
 
 
 {% block js %}
-    <script src="{% static 'js/about.js' %}"></script>
+    <script type='text/javascript' src="{% static 'js/about.js' %}"></script>
 {% endblock %}
 
 {% block content %}

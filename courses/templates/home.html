@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block css %}
-	<link rel="stylesheet" href="{% static 'css/home.css' %}">
+	<link rel="stylesheet" type='text/css' href="{% static 'css/home.css' %}">
 {% endblock %}
 
 
 {% block js %}
-	<script src="{% static 'js/home.js' %}"></script>
+	<script type='text/javascript' src="{% static 'js/home.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
 						<p class="card-text">{{ course.little_description}}</p>
 						<p class="card-text">{{ course.price }}</p>
 						<form class="form-inline my-2 my-lg-0">
-							<a class="btn btn-success mr-2 " href="#" role="button">Купить сейчас</a>
+							<a class="btn btn-success mr-2 " href="{% url 'cart:add_to_cart'%}" role="button">Купить сейчас</a>
 							<a class="btn btn-primary" href="{{ course.get_absolute_url }}" role="button">Подробнее</a>
 						</form>
 					</div>

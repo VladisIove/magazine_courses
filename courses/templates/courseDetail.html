@@ -2,12 +2,31 @@
 {% load static %}
 
 {% block css %}
-	<link rel="stylesheet" href="{% static 'css/detail_course.css' %}">
+	<link rel="stylesheet"  type='text/css' href="{% static 'css/detail_course.css' %}">
 {% endblock %}
 
 
 {% block js %}
-	<script src="{% static 'js/detail_course.js' %}"></script>
+	<script type='text/javascript' src="{% static 'js/detail_course.js' %}"></script>
+	<script type='text/javascript'>
+		$(document).ready(function(){
+			$('.add_to_cart').on('click', function(e){
+				e.preventDefault()
+				course_slug = $(this).attr('data-slug')
+				data = {
+					course_slug: course_slug
+				}
+				$.ajax({
+					type: "GET",
+					url: '{% url "cart:add_to_cart" %}',
+					data: data,
+					success: function(data){
+						$("#cart_count").html(data.cart_total)
+					}
+				})
+			})
+		})
+	</script>
 {% endblock %}
 
 
@@ -20,7 +39,7 @@
 			<h1>{{ course.name }}</h1>
 			<p>{{course.description}}</p>
 			<p>{{course.price}}</p>
-			<button>Купить</button>
+			<a href="#" class='add_to_cart' data-slug={{course.slug}}><button class="btn btn-danger">Добавить в корзину</button></a>
 		</div>
 		<div class="row">
 			<div class="col-4">

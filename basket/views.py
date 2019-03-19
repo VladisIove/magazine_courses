@@ -38,6 +38,7 @@ def add_to_cart_view(request):
 		cart_id = cart.id
 		request.session['cart_id'] = cart_id
 		cart = Cart.objects.get(slug=course_slug)
+		
 	course_slug = request.GET.get('course_slug')
 	course = Course.objects.get(slug = course_slug)
 	cart.add_to_cart(course.slug)

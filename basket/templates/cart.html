@@ -8,6 +8,33 @@
 
 {% block js %}
   <script type='text/javascript' src="{% static 'js/cart.js' %}"></script>
+  <script type='text/javascript'>
+    $(document).ready(function(){
+      $('.remove_from_cart').on('click', function(e){
+        e.preventDefault()
+        course_slug = $(this).attr('data-slug')
+        item_course_id = $(this).attr('data-id')
+        data = {
+          course_slug: course_slug
+        }
+        $.ajax({
+          type: "GET",
+          url: '{% url "cart:remove_from_cart" %}',
+          data: data,
+          success: function(data){
+            $("#cart_count").html(data.cart_total)
+            $('.cart-item-'+item_course_id).remove()
+            $('#cart-total-price').html(parseFloat(data.cart_total_price))
+            if(parseInt(data.cart_total) == 0){
+              $('.my-cart').css('display', 'none')
+              $('.cart-empty').css('display', 'block')
+              $('.cart-empty').html('<h3 class="text-center">Ваша корзина пуста</h3>')
+            }
+          }
+        })
+      })
+    })
+  </script>
 {% endblock %}
 
 
@@ -18,20 +45,34 @@
 
 {% block content %}
 <h3 class="text-center">Ваша корзина</h3>
-<table class="table">
-  <tr>
-    <td class="text-center">Товар</td>
-    <td class="text-center">Кол-во</td>
-    <td class="text-center">Цена</td>
-    <td class="text-center">Удалить</td>
-  </tr>
-  {% for item in cart.items.all %}
+{% if cart.items.count > 0 %}
+  <div class="my-cart">
+      <table class="table">
     <tr>
-      <td class="text-center">{{ item.course.name }}</td>
-      <td class="text-center">{{ item.course.slug }}</td>
-      <td class="text-center">{{ item.course.price }}</td>
-      <td class="text-center"><a href="{% url 'cart:remove_from_cart' %}">Удалить курс</a></td>
+      <td class="text-center">Товар</td>
+      <td class="text-center">Кол-во</td>
+      <td class="text-center">Цена</td>
+      <td class="text-center">Удалить</td>
     </tr>
-  {% endfor %}
-</table>
+    {% for item in cart.items.all %}
+      <tr class='cart-item-{{item.course.id}}'>
+        <input type="hidden" class = 'cart-item'>
+        <td class="text-center">{{ item.course.name }}</td>
+        <td class="text-center">{{ item.course.slug }}</td>
+        <td class="text-center">{{ item.course.price }}</td>
+        <td class="text-center"><a href="#" class='remove_from_cart' data-slug='{{item.course.slug}}'  data-id='{{ item.course.id}}'>Удалить курс</a></td>
+      </tr>
+    {% endfor %}
+    <tr>
+      <td></td>
+      <td>Итог:</td>
+      <td id='cart-total-price'>{{ cart.cart_total }}</td>
+      <td></td>
+    </tr>
+  </table>
+  </div>
+  <h3 class='cart-empty'></h3>
+  {% else %}
+  <h3 class='text-center'>Ваша корзина пуста</h3>
+{% endif %}
 {% endblock %}

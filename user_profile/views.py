@@ -8,9 +8,22 @@ from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 
+
+from django_registration.views import RegistrationView
+from django_registration.forms import RegistrationFormUniqueEmail
+
+
 from .tokens import account_activation_token
 from .forms import SignupForm
 # Create your views here.
+
+
+class RegistrationViewUniqueEmail(RegistrationView):
+  form_class = RegistrationFormUniqueEmail
+
+
+
+
 
 def signup(request):
 	if request.method == 'POST':

@@ -140,6 +140,7 @@ MEDIA_ROOT = os.path.join('media/')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+ACCOUNT_ACTIVATION_DAYS = 2
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

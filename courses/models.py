@@ -43,8 +43,6 @@ class LessonCourse( models.Model ):
 	url_video = models.URLField(max_length=200)
 
 	def __str__(self):
-		return self.name
+		return self.nameDay
 
-	def get_absolute_url(self):
-		return reverse('courses:CourseLesson', args = [self.slug])
 

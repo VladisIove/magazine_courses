@@ -19,12 +19,17 @@ from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+from rest_framework import routers 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('courses.urls')),
     path('', include('basket.urls')),
     path('', include('django.contrib.auth.urls')),
-    path('user/', include('user_profile.urls')),
+    path('', include('django_registration.backends.activation.urls')),
+    path('accounts/', include('user_profile.urls')),
 
 ]
 

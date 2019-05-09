@@ -2,71 +2,79 @@
 {% load static %}
 
 {% block css %}
-	<link rel="stylesheet"  type='text/css' href="{% static 'css/detail_course.css' %}">
+<link rel="stylesheet"  type='text/css' href="{% static 'css/detail_course.css' %}">
 {% endblock %}
 
 
-{% block js %}
-	<script type='text/javascript' src="{% static 'js/detail_course.js' %}"></script>
-	<script type='text/javascript'>
-		$(document).ready(function(){
-			$('.add_to_cart').on('click', function(e){
-				e.preventDefault()
-				course_slug = $(this).attr('data-slug')
-				data = {
-					course_slug: course_slug
-				}
-				$.ajax({
-					type: "GET",
-					url: '{% url "cart:add_to_cart" %}',
-					data: data,
-					success: function(data){
-						$("#cart_count").html(data.cart_total)
-					}
-				})
-			})
-		})
-	</script>
-{% endblock %}
+
 
 
 {% block content %}
-	<div class="row">
-		<div class="col-6">
-			<img src="{{ MEDIA_ROOT }}{{ course.image.url }}" alt="">
-		</div>
-		<div class="col-6">
-			<h1>{{ course.name }}</h1>
-			<p>{{course.description}}</p>
-			<p>{{course.price}}</p>
-			<a href="#" class='add_to_cart' data-slug={{course.slug}}><button class="btn btn-danger">Добавить в корзину</button></a>
-		</div>
-		<div class="row">
-			<div class="col-4">
-				<div class="list-group" id="list-tab" role="tablist">
-					<a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">{{ course.week_one }}</a>
-					<a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">{{ course.week_second }}</a>
-					<a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">{{ course.week_third }}</a>
-					<a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">{{ course.week_fourth }}</a>
-				</div>
+<div class="row m-2">
+	<div class="col-6">
+		<img src="{{ MEDIA_ROOT }}{{ course.image.url }}" alt="" class ='img-thumbnail'>
+	</div>
+	<div class="col-6">
+		<h1>{{ course.name }}</h1>
+		<p>{{course.description}}</p>
+		<p>{{course.price}}</p>
+		{% if user.is_authenticated %}
+
+		{% if course.name in user.bought_courses %}
+		<a class="btn btn-success mr-2 add_to_cart" href="{% url 'courses:videoLessonsCourse' course.slug %}">Перейти к урокам</a>
+		{% else %}
+		<a href="#" class='add_to_cart' data-slug={{course.slug}}><button class="btn btn-danger">Добавить в корзину</button></a>
+		<script type='text/javascript'>
+	$(document).ready(function(){
+		$('.add_to_cart').on('click', function(e){
+			e.preventDefault()
+			course_slug = $(this).attr('data-slug')
+			data = {
+				course_slug: course_slug
+			}
+			$.ajax({
+				type: "GET",
+				url: '{% url "cart:add_to_cart" %}',
+				data: data,
+				success: function(data){
+					$("#cart_count").html(data.cart_total)
+				}
+			})
+		})
+	})
+</script>
+		{% endif %}	
+		{% else %}
+		<a href="{% url 'user_profile:registration_register' %}"><button class="btn btn-danger">Зарегестрируйтесь, что бы купить курс</button></a>
+		{% endif %}
+
+	</div>
+	<div class="row mt-2">
+		<div class="col-4">
+			<div class="list-group" id="list-tab" role="tablist">
+				<a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">{{ course.week_one }}</a>
+				<a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">{{ course.week_second }}</a>
+				<a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">{{ course.week_third }}</a>
+				<a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">{{ course.week_fourth }}</a>
 			</div>
-			<div class="col-8">
-				<div class="tab-content" id="nav-tabContent">
-					<div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-						{{ course.description_week_one}}
-					</div>
-					<div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-						{{ course.description_week_second }}
-					</div>
-					<div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-						{{ course.description_week_third }}
-					</div>
-					<div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-						{{ course.description_week_fourth }}
-					</div>
+		</div>
+		<div class="col-8">
+			<div class="tab-content" id="nav-tabContent">
+				<div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+					{{ course.description_week_one}}
+				</div>
+				<div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+					{{ course.description_week_second }}
+				</div>
+				<div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+					{{ course.description_week_third }}
+				</div>
+				<div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+					{{ course.description_week_fourth }}
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
 {% endblock %}

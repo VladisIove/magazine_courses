@@ -5,12 +5,27 @@ from django.http import HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.core.mail import EmailMessage
+from django.contrib import messages
+from django.urls import reverse
+
 
 from .models import Course, LessonCourse
 from .forms import HelpForm
 
+
+from user_profile.models import User
 from basket.models import Cart
 # Create your views here.
+
+
+class CourseBoughtView(ListView):
+	context_object_name = 'courses'
+	template_name = 'list_bought_courses.html'
+
+	def get_queryset(self):
+		user = User.objects.get(username=self.request.user)
+		return user.courses.all()
+
 
 class CourseListView(ListView):
 	queryset = Course.objects.all()
@@ -142,8 +157,11 @@ def help_message(request):
 			message = request.POST.get('email') + ' ' + request.POST.get('name') +' '+ request.POST.get('message')
 			to_email = 'vlad.shelemakha0302@gmail.com'
 			email = EmailMessage( mail_subject, message, to = [to_email] )
-			email.send()		
-			return HttpResponse('Письмо отправлено')	
+			email.send()	
+			message = 'Письмо отправлено'
+			messages.success(request, message) 
+			return render(request, 'help.html', {'form': form})
+			#return HttpResponse('Письмо отправлено')	
 	else:
 		form = HelpForm()
 

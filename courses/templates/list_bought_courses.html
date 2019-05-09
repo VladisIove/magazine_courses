@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row">
+{% for course in courses %}
+	<div class="col-12 mt-2">
+		<div class="row">
+			<div class="col-4">
+				<img src="{{ MEDIA_ROOT }}{{ course.image.url}}" class="card-img" alt="...">
+			</div>
+			<div class="col-6 offset-2 text-center">
+				<h5 class="card-title">{{ course.name }}</h5>
+				<p class="card-text descr">{{ course.description}}</p>
+				<a href="{% url 'courses:videoLessonsCourse' course.slug %}">Перейти к урокам</a>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+</div>
+{% endblock %}

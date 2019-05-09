@@ -12,10 +12,21 @@
 {% endblock %}
 
 {% block content %}
-	<h2>Поддержка</h2>
+	<h2 class='h2 text-center'>Поддержка</h2>
 	<form method="POST">
 		{% csrf_token %}
-		{{ form|crispy }}
-		<button class='btn btn-primary' type=submit>Отправить</button>
+		<div class="row">
+			<div class="col-5">
+				{{ form.name | as_crispy_field}}
+			</div>
+			<div class="col-5 offset-2">
+				{{ form.email | as_crispy_field}}
+			</div>
+			<div class="col-12">
+				{{ form.message| as_crispy_field }}
+			</div>
+		</div>
+		<div class="text-rirght">
+		<button class='btn btn-primary ' type=submit>Отправить</button></div>
 	</form>
 {% endblock %}

@@ -3,13 +3,14 @@ from django.conf import settings
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
-from django_registration.forms import RegistrationFormUniqueEmail
+from django_registration.backends.activation.views import RegistrationView
 from . import views
+from . import forms 
 
 app_name = 'user_profile'
 
 urlpatterns = [
-		path('register/', views.RegistrationViewUniqueEmail.as_view(), name='registration_register'),
+	path('register/', RegistrationView.as_view(form_class=forms.MyCustomUserForm), name='registration_register'),
     path('', include('django_registration.backends.activation.urls')),
     path('', include('django.contrib.auth.urls')),
   ]

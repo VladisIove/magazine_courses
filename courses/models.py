@@ -45,4 +45,7 @@ class LessonCourse( models.Model ):
 	def __str__(self):
 		return self.nameDay
 
+	class Meta:
+		ordering = ['nameDay']
+
 

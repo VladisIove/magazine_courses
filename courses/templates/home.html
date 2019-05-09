@@ -1,30 +1,61 @@
 {% extends 'base.html' %}
-{% load static %}
+
 
 {% block css %}
-	<link rel="stylesheet" type='text/css' href="{% static 'css/home.css' %}">
-{% endblock %}
+<style>
+	.descr{
+		
+	}
 
+	.img_card{
 
-{% block js %}
-	<script type='text/javascript' src="{% static 'js/home.js' %}"></script>
+	}
+.vignette {
+	-webkit-box-shadow: inset 0px 0px 75px rgba(0,0,0,0.4);
+	-moz-box-shadow:    inset 0px 0px 75px rgba(0,0,0,0.4);
+	box-shadow:         inset 0px 0px 75px rgba(0,0,0,0.4);
+	filter: blur(1px);
+}
+
+.vignette:after {
+	-webkit-box-shadow: inset 0px 0px 75px rgba(0,0,0,0.4);
+	-moz-box-shadow:    inset 0px 0px 75px rgba(0,0,0,0.4);
+	box-shadow:         inset 0px 0px 75px rgba(0,0,0,0.4);
+
+	position: absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
+	content: "";
+}
+</style>
 {% endblock %}
 
 {% block content %}
 
 	<div class="row">
 		{% for course in courses %}
-			<div class="col-6">
-				<div class="card bg-dark text-white">
-					<img src="{{ MEDIA_ROOT }}{{ course.image.url}}" class="card-img" alt="...">
+			<div class="col-6 mt-2 mb-2">
+				<div class="card bg-dark text-white ">
+					<div class="vignette">
+						<img src="{{ MEDIA_ROOT }}{{ course.image.url}}" class="card-img img_card" alt="...">
+					</div>
+					
 					<div class="card-img-overlay">
 						<h5 class="card-title">{{ course.name }}</h5>
-						<p class="card-text">{{ course.little_description}}</p>
-						<p class="card-text">{{ course.price }}</p>
-						<form class="form-inline my-2 my-lg-0">
-							<a class="btn btn-success mr-2 " href="{% url 'cart:add_to_cart'%}" role="button">Купить сейчас</a>
+						<p class="card-text descr">{{ course.little_description}}</p>
+						<p class="card-text price">{{ course.price }}</p>
+						<div class="mt-5">
+						<form class="form-inline my-2 my-lg-0 ">
+							{% if user.is_authenticated %}
+
+								{% if course.name in user.bought_courses %}
+								<a class="btn btn-success mr-2 add_to_cart" href="{% url 'courses:videoLessonsCourse' course.slug %}">Перейти к урокам</a>
+								{% else %}
+								<a class="btn btn-success mr-2 add_to_cart"  role="button" data-slug={{course.slug}}>Купить сейчас</a>
+							{% endif %}		
+							{% endif %}
 							<a class="btn btn-primary" href="{{ course.get_absolute_url }}" role="button">Подробнее</a>
 						</form>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -33,3 +64,29 @@
 		{% endfor %}
 	</div>
 {% endblock %}
+
+{% block js %}
+	<script type='text/javascript'>
+		$(document).ready(function(){
+			$('.add_to_cart').on('click', function(e){
+				course_slug = $(this).attr('data-slug')
+				data = {
+					course_slug: course_slug
+				}
+				$.ajax({
+					type: "GET",
+					url: '{% url "cart:add_to_cart" %}',
+					data: data,
+					success: function(data){
+						$("#cart_count").html(data.cart_total)
+						var url = {% url 'cart:cart' %};
+						$(location).attr('href',url);
+					}
+				})
+
+			})
+
+		})
+	</script>
+{% endblock %}
+
